@@ -4,7 +4,11 @@ import bertcoscia.entities.Customer;
 import bertcoscia.entities.Order;
 import bertcoscia.entities.Product;
 import com.github.javafaker.Faker;
+import org.apache.commons.io.FileUtils;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -101,5 +105,21 @@ public class Application {
         System.out.println("//--------------------------------------------------------------------EX5--------------------------------------------------------------------//");
         Map<String, Double> totalByCategory = products.stream().collect(Collectors.groupingBy(Product::getCategory, Collectors.summingDouble(Product::getPrice)));
         totalByCategory.forEach((category, price) -> System.out.println(category + " " + price));
+
+        //--------------------------------------------------------------------EX6--------------------------------------------------------------------//
+        System.out.println("//--------------------------------------------------------------------EX6--------------------------------------------------------------------//");
+        File productsFile = new File("src/products.txt");
+        salvaProdottiSuDisco(products, productsFile);
+    }
+
+    public static void salvaProdottiSuDisco(List<Product> productList, File file) {
+        for (Product product : productList) {
+            try {
+                FileUtils.writeStringToFile(file, product.getName() + "@" + product.getCategory() + "@" + product.getPrice() + "#" + System.lineSeparator(), StandardCharsets.UTF_8, true);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        System.out.println("Products added to products.txt 😄");
     }
 }
