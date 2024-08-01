@@ -7,6 +7,7 @@ import com.github.javafaker.Faker;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -63,8 +64,20 @@ public class Application {
             orders.add(order);
         }
 
+        //--------------------------------------------------------------------EX1--------------------------------------------------------------------//
+        System.out.println("//--------------------------------------------------------------------EX1--------------------------------------------------------------------//");
         Map<Customer, List<Order>> ordersByClient = orders.stream().collect(Collectors.groupingBy(Order::getCustomer));
         ordersByClient.forEach((customer, orderList) -> System.out.println(customer + ": " + orderList));
 
+        //--------------------------------------------------------------------EX2--------------------------------------------------------------------//
+        System.out.println("//--------------------------------------------------------------------EX2--------------------------------------------------------------------//");
+
+
+        //--------------------------------------------------------------------EX3--------------------------------------------------------------------//
+        System.out.println("//--------------------------------------------------------------------EX3--------------------------------------------------------------------//");
+        List<Product> mostExpensiveProducts = products.stream().sorted(Comparator.comparingDouble(Product::getPrice).reversed()).limit(5).toList();
+        for (Product product : mostExpensiveProducts) {
+            System.out.println(product);
+        }
     }
 }
