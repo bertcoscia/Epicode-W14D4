@@ -75,13 +75,20 @@ public class Application {
 
         //--------------------------------------------------------------------EX2--------------------------------------------------------------------//
         System.out.println("//--------------------------------------------------------------------EX2--------------------------------------------------------------------//");
-        Map<Customer, Double> totalByCustomer = orders.stream()
+        /*Map<Customer, Double> totalByCustomer = orders.stream()
                 .collect(Collectors.groupingBy(
                                 Order::getCustomer,
                                 Collectors.summingDouble(order -> order.getProducts().stream().mapToDouble(Product::getPrice).sum())
                         )
                 );
-        totalByCustomer.forEach((customer, total) -> System.out.println("Customer " + customer.getName() + ", total: " + total));
+        totalByCustomer.forEach((customer, total) -> System.out.println("Customer " + customer.getName() + ", total: " + total));*/
+        Map<Customer, Double> totalByCustomer = orders.stream()
+                .collect(Collectors.groupingBy(
+                                Order::getCustomer,
+                                Collectors.summingDouble(Order::getTotal)
+                        )
+                );
+        totalByCustomer.forEach((customer, total) -> System.out.println(customer.getName() + ", total: " + total));
 
         //--------------------------------------------------------------------EX3--------------------------------------------------------------------//
         System.out.println("//--------------------------------------------------------------------EX3--------------------------------------------------------------------//");
@@ -120,10 +127,12 @@ public class Application {
 
     public static void salvaProdottiSuDisco(List<Product> productList, File file) throws IOException {
         StringBuilder stringa = new StringBuilder();
+        // String stringa2 = "";
 
         for (Product product : productList) {
-            /*FileUtils.writeStringToFile(file, product.getName() + "@" + product.getCategory() + "@" + product.getPrice() + "#" + System.lineSeparator(), StandardCharsets.UTF_8, true);*/
+            // FileUtils.writeStringToFile(file, product.getName() + "@" + product.getCategory() + "@" + product.getPrice() + "#" + System.lineSeparator(), StandardCharsets.UTF_8, true);
             stringa.append(product.getName()).append("@").append(product.getCategory()).append("@").append(product.getPrice()).append("#").append(System.lineSeparator());
+            // stringa2 += product.getName() + "@" + product.getCategory() + "@" + product.getPrice() + "#" + System.lineSeparator(); <-- equivalente a quanto scritto sopra con lo StringBuilder
         }
         FileUtils.writeStringToFile(file, stringa.toString(), StandardCharsets.UTF_8);
         System.out.println("Products added to products.txt 😄");

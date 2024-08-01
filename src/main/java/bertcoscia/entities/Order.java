@@ -23,6 +23,12 @@ public class Order {
         this.customer = customer;
     }
 
+    public double getTotal() {
+        List<Product> productList = this.products;
+        double total = productList.stream().mapToDouble(Product::getPrice).sum();
+        return total;
+    }
+
     public long getId() {
         return id;
     }
