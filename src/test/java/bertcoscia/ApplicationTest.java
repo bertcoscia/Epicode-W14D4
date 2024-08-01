@@ -1,4 +1,4 @@
-package org.example;
+package bertcoscia;
 
 import org.junit.jupiter.api.Test;
 
