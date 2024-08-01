@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 public class Application {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Faker faker = new Faker();
 
         Supplier<Customer> randomCustomer = () -> {
@@ -110,16 +110,30 @@ public class Application {
         System.out.println("//--------------------------------------------------------------------EX6--------------------------------------------------------------------//");
         File productsFile = new File("src/products.txt");
         salvaProdottiSuDisco(products, productsFile);
+
+        //--------------------------------------------------------------------EX7--------------------------------------------------------------------//
+        System.out.println("//--------------------------------------------------------------------EX7--------------------------------------------------------------------//");
+        List<Product> productsFromFile = new ArrayList<>();
+        leggiProdottiDaDisco(productsFile, productsFromFile);
+        for (Product product : productsFromFile) {
+            System.out.println(product);
+        }
     }
 
-    public static void salvaProdottiSuDisco(List<Product> productList, File file) {
+    public static void salvaProdottiSuDisco(List<Product> productList, File file) throws IOException {
         for (Product product : productList) {
-            try {
-                FileUtils.writeStringToFile(file, product.getName() + "@" + product.getCategory() + "@" + product.getPrice() + "#" + System.lineSeparator(), StandardCharsets.UTF_8, true);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            FileUtils.writeStringToFile(file, product.getName() + "@" + product.getCategory() + "@" + product.getPrice() + "#" + System.lineSeparator(), StandardCharsets.UTF_8, true);
         }
         System.out.println("Products added to products.txt 😄");
+    }
+
+    public static void leggiProdottiDaDisco(File file, List<Product> productsFromFile) throws IOException {
+        String content = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
+        String[] contentAsArray = content.split(System.lineSeparator());
+        for (String string : contentAsArray) {
+            String[] productString = string.split("[@#]");
+            Product product = new Product(productString[0], productString[1], Double.parseDouble(productString[2]));
+            productsFromFile.add(product);
+        }
     }
 }
