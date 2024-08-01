@@ -86,9 +86,7 @@ public class Application {
         //--------------------------------------------------------------------EX3--------------------------------------------------------------------//
         System.out.println("//--------------------------------------------------------------------EX3--------------------------------------------------------------------//");
         List<Product> mostExpensiveProducts = products.stream().sorted(Comparator.comparingDouble(Product::getPrice).reversed()).limit(5).toList();
-        for (Product product : mostExpensiveProducts) {
-            System.out.println(product);
-        }
+        mostExpensiveProducts.forEach(System.out::println);
 
         //--------------------------------------------------------------------EX4--------------------------------------------------------------------//
         System.out.println("//--------------------------------------------------------------------EX4--------------------------------------------------------------------//");
@@ -121,9 +119,13 @@ public class Application {
     }
 
     public static void salvaProdottiSuDisco(List<Product> productList, File file) throws IOException {
+        StringBuilder stringa = new StringBuilder();
+
         for (Product product : productList) {
-            FileUtils.writeStringToFile(file, product.getName() + "@" + product.getCategory() + "@" + product.getPrice() + "#" + System.lineSeparator(), StandardCharsets.UTF_8, true);
+            /*FileUtils.writeStringToFile(file, product.getName() + "@" + product.getCategory() + "@" + product.getPrice() + "#" + System.lineSeparator(), StandardCharsets.UTF_8, true);*/
+            stringa.append(product.getName()).append("@").append(product.getCategory()).append("@").append(product.getPrice()).append("#").append(System.lineSeparator());
         }
+        FileUtils.writeStringToFile(file, stringa.toString(), StandardCharsets.UTF_8);
         System.out.println("Products added to products.txt 😄");
     }
 
