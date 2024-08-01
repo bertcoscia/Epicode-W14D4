@@ -71,7 +71,13 @@ public class Application {
 
         //--------------------------------------------------------------------EX2--------------------------------------------------------------------//
         System.out.println("//--------------------------------------------------------------------EX2--------------------------------------------------------------------//");
-        
+        Map<Customer, Double> totalByCustomer = orders.stream()
+                .collect(Collectors.groupingBy(
+                                Order::getCustomer,
+                                Collectors.summingDouble(order -> order.getProducts().stream().mapToDouble(Product::getPrice).sum())
+                        )
+                );
+        totalByCustomer.forEach((customer, total) -> System.out.println("Customer " + customer.getName() + ", total: " + total));
 
         //--------------------------------------------------------------------EX3--------------------------------------------------------------------//
         System.out.println("//--------------------------------------------------------------------EX3--------------------------------------------------------------------//");
