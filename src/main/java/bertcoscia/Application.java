@@ -79,5 +79,16 @@ public class Application {
         for (Product product : mostExpensiveProducts) {
             System.out.println(product);
         }
+
+        //--------------------------------------------------------------------EX4--------------------------------------------------------------------//
+        System.out.println("//--------------------------------------------------------------------EX4--------------------------------------------------------------------//");
+        Map<Order, Double> avgOrderPrice = orders.stream()
+                .collect(Collectors.groupingBy(
+                                order -> order,
+                                Collectors.averagingDouble(order -> order.getProducts().stream().collect(Collectors.averagingDouble(Product::getPrice))
+                                )
+                        )
+                );
+        avgOrderPrice.forEach((order, avgPrice) -> System.out.println("Order: " + order.getId() + ", average price: " + avgPrice));
     }
 }
